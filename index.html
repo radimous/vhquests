@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        *{
+            font-family: sans-serif;
+        }
+        body{
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        
+        }
+        
+    </style>
+	<title>VH QUESTS</title>
+</head>
+<body>
+	<div id="content"></div>
+	<script>
+		async function getQuests() {
+			var hell = await fetch('./quests.json')
+			var questData = await hell.json()
+			contentDiv = document.getElementById('content')
+			for (var k in questData.quests) {   
+				questDiv = document.createElement('div')
+                nameH2 = document.createElement('h2')
+                nameH2.innerHTML = questData.quests[k].name
+                questDiv.appendChild(nameH2)
+				contentDiv.appendChild(questDiv)
+				var quest = questData.quests[k]
+				descString = ''
+				for (var j in quest.descriptionData.description) {
+					var descriptionPart = quest.descriptionData.description[j]
+					descString += descriptionPart.text
+				}
+				var descriptionDiv = document.createElement('div')
+                descString = descString.replace(/\n/g, "<br>")
+                descriptionDiv.innerHTML = descString
+                questDiv.appendChild(descriptionDiv)
+
+			}
+		}
+		getQuests()
+
+	</script>
+</body>
+</html>
