@@ -15,8 +15,13 @@
 			}
 			.quest-title {
 				margin-bottom: 0.4em;
-                color: black
+                color: black;
+                text-decoration-color: black;
 			}
+            .quest-title-link {
+                color: black;
+                text-decoration-color: black;
+            }
 		</style>
 	<title>VH QUESTS</title>
 </head>
@@ -46,6 +51,7 @@
 				nameH2.classList.add("quest-title")
 				nameH2.innerHTML = questData.quests[k].name
                 var link = document.createElement('a');
+                link.classList.add('quest-title-link');
                 link.href = '#' + nameH2.id;
 
                 // Wrap the h2 in the link
