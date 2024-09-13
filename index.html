@@ -22,6 +22,17 @@
 <body>
 	<div id="content"></div>
 	<script>
+		function scrollToHash() {
+			var hash = window.location.hash;
+			if (hash) {
+				var id = hash.substring(1);
+				var element = document.getElementById(id);
+				if (element) {
+					element.scrollIntoView();
+				}
+			}
+		}
+		
 		async function getQuests() {
 			var hell = await fetch('./quests.json')
 			var questData = await hell.json()
@@ -46,11 +57,11 @@
 				descString = descString.replace(/\n/g, "<br>")
 				descriptionDiv.innerHTML = descString
 				questDiv.appendChild(descriptionDiv)
-
 			}
 		}
 
 		getQuests()
+		scrollToHash()
 
 	</script>
 </body>
