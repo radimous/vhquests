@@ -15,6 +15,7 @@
 			}
 			.quest-title {
 				margin-bottom: 0.4em;
+                color: black
 			}
 		</style>
 	<title>VH QUESTS</title>
@@ -32,7 +33,7 @@
 				}
 			}
 		}
-		
+
 		async function getQuests() {
 			var hell = await fetch('./quests.json')
 			var questData = await hell.json()
@@ -44,7 +45,15 @@
 				nameH2.id = questData.quests[k].name.toLowerCase().replaceAll(" ", "_")
 				nameH2.classList.add("quest-title")
 				nameH2.innerHTML = questData.quests[k].name
-				questDiv.appendChild(nameH2)
+                var link = document.createElement('a');
+                link.href = '#' + nameH2.id;
+
+                // Wrap the h2 in the link
+                link.appendChild(nameH2);
+                questDiv.appendChild(link)
+
+
+				// questDiv.appendChild(nameH2)
 				contentDiv.appendChild(questDiv)
 				var quest = questData.quests[k]
 				descString = ''
