@@ -3,21 +3,20 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        *{
-            font-family: sans-serif;
-        }
-        body{
-            max-width: 800px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;        
-        }
-	h2 {
-  	    margin-bottom: 0.4em;
-	}
-        
-    </style>
+		<style>
+			*{
+				font-family: sans-serif;
+			}
+			body{
+				max-width: 800px;
+				margin: 0 auto;
+				display: flex;
+				flex-direction: column; 
+			}
+			.quest-title {
+				margin-bottom: 0.4em;
+			}
+		</style>
 	<title>VH QUESTS</title>
 </head>
 <body>
@@ -27,11 +26,14 @@
 			var hell = await fetch('./quests.json')
 			var questData = await hell.json()
 			contentDiv = document.getElementById('content')
-			for (var k in questData.quests) {   
+			for (var k in questData.quests) { 
 				questDiv = document.createElement('div')
-                nameH2 = document.createElement('h2')
-                nameH2.innerHTML = questData.quests[k].name
-                questDiv.appendChild(nameH2)
+				questDiv.classList.add("quest")
+				nameH2 = document.createElement('h2')
+				nameH2.id = questData.quests[k].name.toLowerCase().replaceAll(" ", "_")
+				nameH2.classList.add("quest-title")
+				nameH2.innerHTML = questData.quests[k].name
+				questDiv.appendChild(nameH2)
 				contentDiv.appendChild(questDiv)
 				var quest = questData.quests[k]
 				descString = ''
@@ -40,12 +42,14 @@
 					descString += descriptionPart.text
 				}
 				var descriptionDiv = document.createElement('div')
-                descString = descString.replace(/\n/g, "<br>")
-                descriptionDiv.innerHTML = descString
-                questDiv.appendChild(descriptionDiv)
+				descriptionDiv.classList.add("quest-description")
+				descString = descString.replace(/\n/g, "<br>")
+				descriptionDiv.innerHTML = descString
+				questDiv.appendChild(descriptionDiv)
 
 			}
 		}
+
 		getQuests()
 
 	</script>
