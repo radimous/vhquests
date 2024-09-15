@@ -12,15 +12,30 @@
 				margin: 0 auto;
 				display: flex;
 				flex-direction: column; 
+                background-color: black;
 			}
 			.quest-title {
 				margin-bottom: 0.4em;
-                color: black;
-                text-decoration-color: black;
+					color: black;
+					text-decoration-color: black;
 			}
             .quest-title-link {
                 color: black;
                 text-decoration-color: black;
+            }
+            #content{
+                background-color: #8b8b8b;
+                padding: 0 20px;
+                border-color: #c6c6c6;
+                border-width: 12px;
+                border-style: solid;
+                border-radius: 5px;
+            }
+            .quest{
+                padding-bottom: 20px;
+            }
+            .quest:not(:last-child){
+                border-bottom: 2px dashed lightgray;
             }
 		</style>
 	<title>VH QUESTS</title>
@@ -38,18 +53,119 @@
 				}
 			}
 		}
-
-		async function getQuests() {
-			var hell = await fetch('./quests.json')
-			var questData = await hell.json()
-			contentDiv = document.getElementById('content')
-			for (var k in questData.quests) { 
-				questDiv = document.createElement('div')
-				questDiv.classList.add("quest")
-				nameH2 = document.createElement('h2')
-				nameH2.id = questData.quests[k].name.toLowerCase().replaceAll(" ", "_")
-				nameH2.classList.add("quest-title")
-				nameH2.innerHTML = questData.quests[k].name
+        colorMap = {
+            "absorb": "#8EEDD9",
+            "blocks": "#945D38",
+            "chains": "#cc3639",
+            "chance": "#ffeb07",
+            "cooldown": "#cbe6fe",
+            "damage": "#C23627",
+            "damageInterval": "#A86225",
+            "damageReduction": "#C23627",
+            "delay": "#8C4916",
+            "distance": "#F2E685",
+            "duration": "#7024ac",
+            "eternals": "#C7FFE7",
+            "force": "#5ae09c",
+            "fortune": "#8bd0c9",
+            "freezeDuration": "#2FE1FA",
+            "glacialChance": "#85edfe",
+            "heal": "#7DF587",
+            "knockback": "#FFB00F",
+            "leech": "#cf0000",
+            "levelHi": "#00FF00",
+            "levelLo": "#C23627",
+            "manaCost": "#0353d7",
+            "manaPerDamage": "#0353d7",
+            "maxTargets": "#cd009b",
+            "name": "#FCF5C5",
+            "projectileDamageTaken": "#CFB174",
+            "radius": "#33ff6d",
+            "range": "#0D7A39",
+            "resistance": "#09bfb8",
+            "slowness": "#d1d0ae",
+            "text": "#192022",
+            "unbreaking": "#dcc4f0",
+            "additionalManaPerBolt": "#0353d7",
+            "affinity": "#b2f44b",
+            "baby": "#f5b2f9",
+            "blue": "#0060ff",
+            "castType": "#1e1e1e",
+            "chilled": "#2FE1FA",
+            "chilling": "#2FE1FA",
+            "coin_bounty": "#42445d",
+            "common": "#ffffff",
+            "cursed": "#9a6d3a",
+            "durabilityWearReduction": "#dbb0dc",
+            "electric": "#003a28",
+            "epic": "#ff55ff",
+            "ethereal": "#1bde8e",
+            "expertise": "#fc30bc",
+            "fragment": "#805b48",
+            "gearResistance": "#FEDD00",
+            "gilded": "#d7ad16",
+            "gold": "#ffd42a",
+            "herald": "#8d3327",
+            "idona": "#d80000",
+            "impossible": "#7721e1",
+            "instability": "#c13115",
+            "itemquantity": "#e88a12",
+            "itemrarity": "#EAFF00",
+            "knowledge": "#8bf5db",
+            "legendary": "#f5901d",
+            "level": "#c1579d",
+            "living": "#62bb12",
+            "luckyHit": "#6DF5A3",
+            "maxGlacialPrison": "#2FE1FA",
+            "maxStacks": "#36ffa7",
+            "miningspeed": "#47b8f5",
+            "normal": "#81f19b",
+            "numberOfBounces": "#085ede",
+            "numberOfJavelins": "#deb308",
+            "omega": "#55ff55",
+            "orange": "#f99b21",
+            "piercing": "#4020b8",
+            "poison": "#6fe95a",
+            "qhighlight": "#FCF5C5",
+            "quillCount": "#cc3639",
+            "rare": "#ffff55",
+            "red": "#ff0202",
+            "regret": "#d92946",
+            "shocking": "#fffb81",
+            "slate": "#6A5ACD",
+            "soulchance": "#4800FF",
+            "speed": "#f6cd0e",
+            "stacksUsedPerHit": "#6b1c00",
+            "stun": "#19A6E4", 
+            "tenos": "#009dde",
+            "titleLine": "#08ffce",
+            "unmodifiable": "#b0320b",
+            "velara": "#54fc54",
+            "weakness": "#afb477",
+            "wendarr": "#dea700",
+            "white": "#ffffff",
+            "wooden": "#603a17",
+            "yellow": "#ffe400"
+        }
+        function resolveColor(clr){
+            if (clr[0] == "#"){
+                return clr
+            }
+            if (clr[0] == "$"){
+                return colorMap[clr.substring(1)]
+            }
+        }
+        async function getQuests() {
+            var hell = await fetch('./quests.json')
+            var questData = await hell.json()
+            contentDiv = document.getElementById('content')
+            for (var k in questData.quests) { 
+                questDiv = document.createElement('div')
+                questDiv.classList.add("quest")
+                nameH2 = document.createElement('h2')
+                nameH2.id = questData.quests[k].name.toLowerCase().replaceAll(" ", "_")
+                nameH2.classList.add("quest-title")
+                nameH2.innerHTML = questData.quests[k].name
                 var link = document.createElement('a');
                 link.classList.add('quest-title-link');
                 link.href = '#' + nameH2.id;
@@ -59,24 +175,34 @@
                 questDiv.appendChild(link)
 
 
-				// questDiv.appendChild(nameH2)
-				contentDiv.appendChild(questDiv)
-				var quest = questData.quests[k]
-				descString = ''
-				for (var j in quest.descriptionData.description) {
-					var descriptionPart = quest.descriptionData.description[j]
-					descString += descriptionPart.text
-				}
-				var descriptionDiv = document.createElement('div')
-				descriptionDiv.classList.add("quest-description")
-				descString = descString.replace(/\n/g, "<br>")
-				descriptionDiv.innerHTML = descString
-				questDiv.appendChild(descriptionDiv)
-			}
-			scrollToHash()
-		}
+                // questDiv.appendChild(nameH2)
+                contentDiv.appendChild(questDiv)
+                var quest = questData.quests[k]
+                descString = ''
+                    var descriptionDiv = document.createElement('div')
+                descriptionDiv.classList.add("quest-description")
 
-		getQuests()
+                for (var j in quest.descriptionData.description) {
+                    var descriptionPart = quest.descriptionData.description[j]
+                    var descPartText = descriptionPart.text
+                    descPartText = descPartText.replace(/\n/g, "<br>")
+                    var descPartSpan = document.createElement('span')
+                    descPartSpan.innerHTML = descPartText
+                    console.log(descriptionPart.color + ": " + descPartText)
+                    descPartSpan.style.color =  resolveColor(descriptionPart.color)
+                    descriptionDiv.appendChild(descPartSpan)
+
+                    // descString += descriptionPart.text
+                }
+
+                // descString = descString.replace(/\n/g, "<br>")
+                // descriptionDiv.innerHTML = descString
+                questDiv.appendChild(descriptionDiv)
+            }
+            scrollToHash()
+        }
+
+        getQuests()
 
 	</script>
 </body>
